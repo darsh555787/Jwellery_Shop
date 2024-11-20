@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart with Gradient Dialog</title>
+    <style>
+        .dialog {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .dialog-content {
+            background: linear-gradient(to right, #a855f7, #ec4899, #ef4444);
+            color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="addToCart('Sample Product', 100, '/placeholder.svg')" class="button">Add to Cart</button>
+    <span id="cartCount">Cart Items: 0</span>
+
+    <div id="dialog" class="dialog">
+        <div class="dialog-content">
+            <span class="close">&times;</span>
+            <h2>Item Added to Cart!</h2>
+            <p>Your item has been successfully added to the cart.</p>
+            <p id="cartTotal">Cart Total: 0 item(s)</p>
+            <button onclick="closeDialog()" class="button">Continue Shopping</button>
+            <button onclick="viewCart()" class="button">View Cart</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize cart items array in localStorage if it doesn't exist
+        if (!localStorage.getItem('cartItems')) {
+            localStorage.setItem('cartItems', JSON.stringify([]));
+        }
+
+        function addToCart(productName, price, imageSrc) {
+            // Get current cart items
+            let cartItems = JSON.parse(localStorage.getItem('cartItems'));
+            
+            // Add new item to cart
+            cartItems.push({ name: productName, price: price, image: imageSrc, quantity: 1 });
+            
+            // Save updated cart items
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            
+            // Update cart icon count
+            updateCartCount();
+            
+            // Show dialog box
+            showDialog();
+        }
+
+        function updateCartCount() {
+            let cartItems = JSON.parse(localStorage.getItem('cartItems'));
+            let cartCount = document.getElementById('cartCount');
+            cartCount.textContent = `Cart Items: ${cartItems.length}`;
+            
+            let cartTotal = document.getElementById('cartTotal');
+            cartTotal.textContent = `Cart Total: ${cartItems.length} item(s)`;
+        }
+
+        function showDialog() {
+            let dialog = document.getElementById('dialog');
+            dialog.style.display = 'block';
+        }
+
+        function closeDialog() {
+            let dialog = document.getElementById('dialog');
+            dialog.style.display = 'none';
+        }
+
+        function viewCart() {
+            // Implement view cart logic here
+            console.log('View cart clicked');
+            closeDialog();
+        }
+
+        // Close dialog when clicking on <span> (x)
+        document.querySelector('.close').onclick = closeDialog;
+
+        // Close dialog when clicking outside of it
+        window.onclick = function(event) {
+            let dialog = document.getElementById('dialog');
+            if (event.target == dialog) {
+                dialog.style.display = 'none';
+            }
+        }
+
+        // Update cart count on page load
+        document.addEventListener('DOMContentLoaded', updateCartCount);
+    </script>
+</body>
+</html>

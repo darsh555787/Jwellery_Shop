@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Box icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+    />
+    <!-- Custom StyleSheet -->
+    <link rel="stylesheet" href="./css/styles.css" />
+    <title>Samarth Jwellers / Shop</title>
+
+
+    <script>
+      // Initialize cart items array in localStorage if it doesn't exist
+      if (!localStorage.getItem('cartItems')) {
+        localStorage.setItem('cartItems', JSON.stringify([]));
+      }
+    
+      function addToCart(productName, price, imageSrc) {
+        // Get current cart items
+        let cartItems = JSON.parse(localStorage.getItem('cartItems'));
+        
+        // Add new item to cart
+        cartItems.push({ name: productName, price: price, image: imageSrc, quantity: 1 });
+        
+        // Save updated cart items
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        
+        // Update cart icon count
+        updateCartCount();
+        
+        // Show gradient dialog box
+        showGradientDialog('Item Added to Cart!');
+      }
+    
+      function updateCartCount() {
+        let cartItems = JSON.parse(localStorage.getItem('cartItems'));
+        let cartCount = document.querySelectorAll('.bx-cart + span');
+        cartCount.forEach(span => span.textContent = cartItems.length);
+      }
+    
+      function showGradientDialog(message) {
+        // Create dialog element
+        let dialog = document.createElement('div');
+        dialog.style.cssText = `
+          position: fixed;
+          top: 20%;
+          left: 80%;
+          transform: translate(-50%, -50%);
+          background: linear-gradient(290deg, rgba(94,12,144,1) 0%, rgba(191,0,255,1) 0%, rgba(199,50,198,1) 100%);
+          padding: 30px;
+          border-radius: 15px;
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+          z-index: 1000;
+          text-align: center;
+          font-family: Arial, sans-serif;
+          width: 300px;
+          height: 200px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        `;
+    
+        // Add message to dialog
+        let messageElement = document.createElement('p');
+        messageElement.textContent = message;
+        messageElement.style.cssText = `
+          margin: 0 0 20px 0;
+          font-size: 24px;
+          color: #333;
+          font-weight: bold;
+        `;
+        dialog.appendChild(messageElement);
+    
+        // Add cart count to dialog
+        let cartItems = JSON.parse(localStorage.getItem('cartItems'));
+        let cartCountElement = document.createElement('p');
+        cartCountElement.textContent = `Items in cart: ${cartItems.length}`;
+        cartCountElement.style.cssText = `
+          margin: 0;
+          font-size: 18px;
+          color: #555;
+        `;
+        dialog.appendChild(cartCountElement);
+    
+        // Add close arrow image
+        let closeArrow = document.createElement('img');
+        closeArrow.src = 'https://cdn-icons-png.flaticon.com/512/2976/2976286.png'; // Replace with your actual close arrow PNG URL
+        closeArrow.alt = 'Close';
+        closeArrow.style.cssText = `
+          width: 30px;
+          height: 30px;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+        `;
+        closeArrow.onmouseover = function() {
+          this.style.transform = 'scale(1.1)';
+        };
+        closeArrow.onmouseout = function() {
+          this.style.transform = 'scale(1)';
+        };
+        closeArrow.onclick = function() {
+          document.body.removeChild(dialog);
+        };
+        dialog.appendChild(closeArrow);
+    
+        // Add dialog to body
+        document.body.appendChild(dialog);
+    
+        // Remove dialog after 3 seconds
+        setTimeout(() => {
+          if (document.body.contains(dialog)) {
+            document.body.removeChild(dialog);
+          }
+        }, 3000);
+      }
+    
+      // Call updateCartCount when the page loads
+      document.addEventListener('DOMContentLoaded', updateCartCount);
+    </script>
+
+
+
+
+
+
+
+
+    
+
+
+
+
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <div class="top-nav">
+      <div class="container d-flex">
+        <!-- <p>Order Online Or Call Us: (001) 2222-55555</p>
+        <ul class="d-flex">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul> -->
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="nav-center container d-flex">
+        <a href="/" class="logo" style="display: flex; align-items: center;">
+          <img src="./images/logo.png" alt="Logo" style="height: 50px; margin-right: 10px;">
+          <h1 style="color: #7d3c98; margin: 0;">Samarth Jwellers</h1>
+        </a>
+
+        <ul class="nav-list d-flex">
+          <li class="nav-item">
+            <a href="/" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="product.html" class="nav-link">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="#terms" class="nav-link">Terms</a>
+          </li>
+          <li class="nav-item">
+            <a href="#about" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="#contact" class="nav-link">Contact</a>
+          </li>
+          <li class="icons d-flex">
+            <a href="login.html" class="icon">
+              <i class="bx bx-user"></i>
+            </a>
+            <div class="icon">
+              <i class="bx bx-search"></i>
+            </div>
+            <div class="icon">
+              <i class="bx bx-heart"></i>
+              <span class="d-flex">0</span>
+            </div>
+            <a href="cart.html" class="icon">
+              <i class="bx bx-cart"></i>
+              <span class="d-flex">0</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="icons d-flex">
+          <a href="login.html" class="icon">
+            <i class="bx bx-user"></i>
+          </a>
+          <div class="icon">
+            <i class="bx bx-search"></i>
+          </div>
+          <!-- <div class="icon">
+            <i class="bx bx-heart"></i>
+            <span class="d-flex">0</span>
+          </div> -->
+          <a href="cart.html" class="icon">
+            <i class="bx bx-cart"></i>
+            <span class="d-flex">0</span>
+          </a>
+        </div>
+
+        <div class="hamburger">
+          <i class="bx bx-menu-alt-left"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Products -->
+    <section class="section all-products" id="products">
+      <div class="top container">
+        <h1><font color=" #7d3c98" > All Products</font></h1>
+      </div>
+      <div class="product-center container">
+        <div class="product-item">
+          <div class="overlay">
+            <a href="productDetails.html" class="product-thumb">
+              <img src="./images/e2.jpg" alt="" />
+            </a>
+            <span class="discount">40%</span>
+          </div>
+          <div class="product-info">
+            <span>MEN'S CLOTHES</span>
+            <a href="product1.html">Concepts Solid Pink Men’s Polo</a>
+            <h4>$150</h4>
+          </div>
+          <ul class="icons">
+            <!-- <li><i class="bx bx-heart"></i></li> -->
+            <li><i class="bx bx-search"></i></li>
+            <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/e2.jpg')"></i></li>
+          </ul>
+        </div>
+        <div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="./images/e3.jpg" alt="" />
+            </a>
+            <span class="discount">40%</span>
+          </div>
+          <div class="product-info">
+            <span>MEN'S CLOTHES</span>
+            <a href="product2.html">Concepts Solid Pink Men’s Polo</a>
+            <h4>$150</h4>
+          </div>
+          <ul class="icons">
+            <!-- <li><i class="bx bx-heart"></i></li> -->
+            <li><i class="bx bx-search"></i></li>
+            <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/e3.jpg')"></i></li>
+          </ul>
+        </div>
+        <div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="./images/e4.jpg" alt="" />
+            </a>
+            <span class="discount">40%</span>
+          </div>
+          <div class="product-info">
+            <span>MEN'S CLOTHES</span>
+            <a href="product4.html">Concepts Solid Pink Men’s Polo</a>
+            <h4>$150</h4>
+          </div>
+          <ul class="icons">
+            <!-- <li><i class="bx bx-heart"></i></li> -->
+            <li><i class="bx bx-search"></i></li>
+            <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/e4.jpg')"></i></li>
+          </ul>
+        </div>
+        <div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="./images/e9.jpg" alt="" />
+            </a>
+          </div>
+          <div class="product-info">
+            <span>MEN'S CLOTHES</span>
+            <a href="productDetails.html">Concepts Solid Pink Men’s Polo</a>
+            <h4>$150</h4>
+          </div>
+          <ul class="icons">
+            <!-- <li><i class="bx bx-heart"></i></li> -->
+            <li><i class="bx bx-search"></i></li>
+            <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/e9.jpg')"></i></li>
+          </ul>
+        </div>
+        <div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="./images/b3.jpg" alt="" />
+            </a>
+            <span class="discount">40%</span>
+          </div>
+          <div class="product-info">
+            <span>MEN'S CLOTHES</span>
+            <a href="product8.html">Concepts Solid Pink Men’s Polo</a>
+            <h4>$150</h4>
+          </div>
+          <ul class="icons">
+            <!-- <li><i class="bx bx-heart"></i></li> -->
+            <li><i class="bx bx-search"></i></li>
+            <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/b3.jpg')"></i></li>
+          </ul>
+        </div>
+        <div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="./images/b4.jpg" alt="" />
+            </a>
+          </div>
+          <div class="product-info">
+            <span>MEN'S CLOTHES</span>
+            <a href="product9.html">Concepts Solid Pink Men’s Polo</a>
+            <h4>$150</h4>
+          </div>
+          <ul class="icons">
+            <!-- <li><i class="bx bx-heart"></i></li> -->
+            <li><i class="bx bx-search"></i></li>
+            <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/b4.jpg')"></i></li>
+          </ul>
+        </div>
+        <div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="./images/b1.jpg" alt="" />
+            </a>
+            <span class="discount">40%</span>
+          </div>
+          <div class="product-info">
+            <span>MEN'S CLOTHES</span>
+            <a href="product6.html">Concepts Solid Pink Men’s Polo</a>
+            <h4>$150</h4>
+          </div>
+          <ul class="icons">
+            <!-- <li><i class="bx bx-heart"></i></li> -->
+            <li><i class="bx bx-search"></i></li>
+            <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/b1.jpg')"></i></li>
+          </ul>
+        </div>
+        <div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="./images/b2.jpg" alt="" />
+            </a>
+          </div>
+          <div class="product-info">
+            <span>MEN'S CLOTHES</span>
+            <a href="product7.html">Concepts Solid Pink Men’s Polo</a>
+            <h4>$150</h4>
+          </div>
+          <ul class="icons">
+            <!-- <li><i class="bx bx-heart"></i></li> -->
+            <li><i class="bx bx-search"></i></li>
+            <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/2.jpg')"></i></li>
+          </ul>
+        </div>
+      </div>
+
+
+<!-- its mhee -->
+
+  <div class="product-center container">
+    <div class="product-item">
+      <div class="overlay">
+        <a href="productDetails.html" class="product-thumb">
+          <img src="./images/e2.jpg" alt="" />
+        </a>
+        <span class="discount">40%</span>
+      </div>
+      <div class="product-info">
+        <span>MEN'S CLOTHES</span>
+        <a href="product1.html">Concepts Solid Pink Men’s Polo</a>
+        <h4>$150</h4>
+      </div>
+      <ul class="icons">
+        <!-- <li><i class="bx bx-heart"></i></li> -->
+        <li><i class="bx bx-search"></i></li>
+        <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/e2.jpg')"></i></li>
+      </ul>
+    </div>
+    <div class="product-item">
+      <div class="overlay">
+        <a href="" class="product-thumb">
+          <img src="./images/e3.jpg" alt="" />
+        </a>
+        <span class="discount">40%</span>
+      </div>
+      <div class="product-info">
+        <span>MEN'S CLOTHES</span>
+        <a href="product2.html">Concepts Solid Pink Men’s Polo</a>
+        <h4>$150</h4>
+      </div>
+      <ul class="icons">
+        <!-- <li><i class="bx bx-heart"></i></li> -->
+        <li><i class="bx bx-search"></i></li>
+        <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/e3.jpg')"></i></li>
+      </ul>
+    </div>
+    <div class="product-item">
+      <div class="overlay">
+        <a href="" class="product-thumb">
+          <img src="./images/e4.jpg" alt="" />
+        </a>
+        <span class="discount">40%</span>
+      </div>
+      <div class="product-info">
+        <span>MEN'S CLOTHES</span>
+        <a href="product4.html">Concepts Solid Pink Men’s Polo</a>
+        <h4>$150</h4>
+      </div>
+      <ul class="icons">
+        <!-- <li><i class="bx bx-heart"></i></li> -->
+        <li><i class="bx bx-search"></i></li>
+        <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/e4.jpg')"></i></li>
+      </ul>
+    </div>
+    <div class="product-item">
+      <div class="overlay">
+        <a href="" class="product-thumb">
+          <img src="./images/e9.jpg" alt="" />
+        </a>
+      </div>
+      <div class="product-info">
+        <span>MEN'S CLOTHES</span>
+        <a href="productDetails.html">Concepts Solid Pink Men’s Polo</a>
+        <h4>$150</h4>
+      </div>
+      <ul class="icons">
+        <!-- <li><i class="bx bx-heart"></i></li> -->
+        <li><i class="bx bx-search"></i></li>
+        <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/e9.jpg')"></i></li>
+      </ul>
+    </div>
+    <div class="product-item">
+      <div class="overlay">
+        <a href="" class="product-thumb">
+          <img src="./images/b3.jpg" alt="" />
+        </a>
+        <span class="discount">40%</span>
+      </div>
+      <div class="product-info">
+        <span>MEN'S CLOTHES</span>
+        <a href="product8.html">Concepts Solid Pink Men’s Polo</a>
+        <h4>$150</h4>
+      </div>
+      <ul class="icons">
+        <!-- <li><i class="bx bx-heart"></i></li> -->
+        <li><i class="bx bx-search"></i></li>
+        <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/b3.jpg')"></i></li>
+      </ul>
+    </div>
+    <div class="product-item">
+      <div class="overlay">
+        <a href="" class="product-thumb">
+          <img src="./images/b4.jpg" alt="" />
+        </a>
+      </div>
+      <div class="product-info">
+        <span>MEN'S CLOTHES</span>
+        <a href="product9.html">Concepts Solid Pink Men’s Polo</a>
+        <h4>$150</h4>
+      </div>
+      <ul class="icons">
+        <!-- <li><i class="bx bx-heart"></i></li> -->
+        <li><i class="bx bx-search"></i></li>
+        <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/b4.jpg')"></i></li>
+      </ul>
+    </div>
+    <div class="product-item">
+      <div class="overlay">
+        <a href="" class="product-thumb">
+          <img src="./images/b1.jpg" alt="" />
+        </a>
+        <span class="discount">40%</span>
+      </div>
+      <div class="product-info">
+        <span>MEN'S CLOTHES</span>
+        <a href="product6.html">Concepts Solid Pink Men’s Polo</a>
+        <h4>$150</h4>
+      </div>
+      <ul class="icons">
+        <!-- <li><i class="bx bx-heart"></i></li> -->
+        <li><i class="bx bx-search"></i></li>
+        <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/b1.jpg')"></i></li>
+      </ul>
+    </div>
+    <div class="product-item">
+      <div class="overlay">
+        <a href="" class="product-thumb">
+          <img src="./images/b2.jpg" alt="" />
+        </a>
+      </div>
+      <div class="product-info">
+        <span>MEN'S CLOTHES</span>
+        <a href="product7.html">Concepts Solid Pink Men’s Polo</a>
+        <h4>$150</h4>
+      </div>
+      <ul class="icons">
+        <!-- <li><i class="bx bx-heart"></i></li> -->
+        <li><i class="bx bx-search"></i></li>
+        <li><i class="bx bx-cart" onclick="addToCart('Product Name', 150, './images/2.jpg')"></i></li>
+      </ul>
+    </div>
+  </div>
+
+
+
+
+    </section>
+    <section class="pagination">
+      <div class="container">
+        <p><center><a href="login.html">More</a></center></p>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="row">
+        <div class="col d-flex">
+          <h4>INFORMATION</h4>
+          <a href="">About us</a>
+          <a href="">Contact Us</a>
+          <a href="">Term & Conditions</a>
+          <a href="">Shipping Guide</a>
+        </div>
+        <div class="col d-flex">
+          <h4>USEFUL LINK</h4>
+          <a href="">Online Store</a>
+          <a href="">Customer Services</a>
+          <a href="">Promotion</a>
+          <a href="">Top Brands</a>
+        </div>
+        <div class="col d-flex">
+          <span><i class="bx bxl-facebook-square"></i></span>
+          <span><i class="bx bxl-instagram-alt"></i></span>
+          <span><i class="bx bxl-github"></i></span>
+          <span><i class="bx bxl-twitter"></i></span>
+          <span><i class="bx bxl-pinterest"></i></span>
+        </div>
+      </div>
+    </footer>
+    <!-- Custom Script -->
+    <script src="./js/index.js"></script>
+  </body>
+</html>
